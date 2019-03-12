@@ -30,7 +30,7 @@ Yay!
 ### The Bedtime Story
 
 #### A User Signs up 
-- The `User` is created with a `POST` request to `/users` or `/register
+- The `User` is created with a `POST` request to `/users` or `/register`
 - The `password` is hashed using `bcrypt` and stored to the db as a `password_digest`
 - Non-sensitive, but identifying, information about the user is encoded into a token that cannot be tampered with and sent back to the client as a response
 

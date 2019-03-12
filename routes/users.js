@@ -4,18 +4,7 @@ const { hashPassword, genToken, checkPassword } = require('../auth');
 
 const usersRouter = Router();
 
-usersRouter.post('/', async (req, res) => {
-  try {
-
-    const { name, password, email } = req.body;
-    const password_digest = await hashPassword(password);
-
-    const user = await User.create({
-      name,
-      email,
-      password_digest
-    });
-
+const buildAuthResponse = (user) => {
     const token_data = {
       id: user.id,
       name: user.name,
@@ -29,7 +18,27 @@ usersRouter.post('/', async (req, res) => {
       email: user.email,
     };
 
-    res.json({ user: userData, token });
+  return {
+    user: userData,
+    token,
+  };
+}
+
+usersRouter.post('/', async (req, res) => {
+  try {
+
+    const { name, password, email } = req.body;
+    const password_digest = await hashPassword(password);
+
+    const user = await User.create({
+      name,
+      email,
+      password_digest
+    });
+
+    const respData = buildAuthResponse(user);
+
+    res.json({ ...respData });
   } catch (e) {
     console.log(e);
     res.status(500).send(e.message);
@@ -46,16 +55,10 @@ usersRouter.post('/login', async (req, res) => {
     });
 
     if (await checkPassword(password, user.password_digest)) {
-      const token_data = {
-        id: user.id,
-        name: user.name,
-        email: user.email
-      };
+      const respData = buildAuthResponse(user);
 
-      const token = genToken(token_data);
-      const { password_digest, ...restUser } = user.dataValues;
 
-      res.json({ token, user: restUser });
+      res.json({ ...respData });
     } else {
       res.status(401).send('Invalid Credentials');
     }

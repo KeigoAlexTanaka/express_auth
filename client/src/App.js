@@ -19,11 +19,11 @@ class App extends Component {
       password,
     };
 
-    const resp = await axios.post(`${URL}/users/login`, data);
+    const resp = await axios.post(`${URL}/users`, user);
     console.log(resp.data);
     const { token } = resp.data;
 
-    const otherResp = await axios.get(`${URL}/tweets`, {
+    const otherResp = await axios.post(`${URL}/tweets`, { text: 'going surfing' }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -18,8 +18,10 @@ const User = sequelize.define('user', {
 
 const Tweet = sequelize.define('tweet', {
   text: Sequelize.STRING,
-  author_id: Sequelize.INTEGER
 });
+
+User.hasMany(Tweet);
+Tweet.belongsTo(User);
 
 module.exports = {
   User,

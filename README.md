@@ -49,6 +49,6 @@ Yay!
 - The server can then inspect the header, and if it exists decode the token
 - The decoded token data will be just that data that was encoded from the beginning
 - The token decoding phase can also determine if the token's data has been tampered with.
-- If the token was not tampered with and has a valid user's id/email or somesuch, then it allows the request to reach the protected endpoint
+- If the token was not tampered with and has a valid user's id/email or somesuch, then it allows the request to reach the protected endpoint; else, a 403 is returned to the client.
 
 - Optionally, the protected route can attach the decoded user data to the request object so that the endpoint does not need to make an additional db call to fetch the "current user's" data.
